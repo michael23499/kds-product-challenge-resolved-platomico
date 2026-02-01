@@ -1,54 +1,99 @@
-# Platomico KDS Product Challenge
+# Platomico KDS - Kitchen Display System
 
-## Gestión de órdenes y flujo operativo en tienda
+Sistema de gestión de órdenes en tiempo real para operaciones de tienda con integración de repartidores.
 
-### Contexto  
-En este desafío trabajarás sobre un escenario real de operación. Nuestra tienda recibe múltiples órdenes de forma simultánea a través de Glovo, y es fundamental contar con una herramienta que permita al equipo en tienda visualizar, gestionar y operar los pedidos de manera eficiente, asegurando una entrega fluida a los repartidores.
+## Descripcion de la Solucion
 
-El objetivo es diseñar e implementar una solución _full-stack_ que represente el flujo completo de una orden desde su recepción hasta su entrega, utilizando un enfoque claro, escalable y orientado a negocio.
+Este proyecto implementa un **Kitchen Display System (KDS)** completo que permite:
 
----
+- Recibir y visualizar pedidos en un tablero Kanban de 3 columnas
+- Actualizar estados de órdenes en tiempo real via WebSocket
+- Gestionar la entrega a repartidores (riders)
+- Simular pedidos de Glovo para pruebas
+- Crear y editar órdenes manualmente
 
-### Objetivo  
-Desarrollar una solución que conecte el flujo _end-to-end_ de las órdenes, permitiendo:
+### Stack Tecnologico
 
-- Recibir pedidos desde una fuente externa, simulada o integrada.
-- Visualizar las órdenes en un sistema tipo Kanban, reflejando su estado actual.
-- Actualizar el estado de los pedidos de forma clara y confiable.
-- Facilitar la operación del equipo en tienda y la entrega a riders.
-
-Parte de la base ya está resuelta; tu trabajo será completar y estructurar el flujo, tomando decisiones técnicas fundamentadas.
-
-
-### Criterios de Evaluación  
-
-Se evaluará principalmente:
-
-- Capacidad de resolución de problemas.
-- Priorización y enfoque _MVP first_.
-- Claridad en el diseño del flujo de órdenes.
-- Decisiones técnicas bien justificadas.
-- Código legible, mantenible y bien estructurado.
-- Capacidad de extender la solución (opcional).
-
-Primero debe resolverse correctamente el problema principal.  
-Las mejoras, optimizaciones o funcionalidades adicionales son bienvenidas, pero opcionales.
+| Capa | Tecnologia |
+|------|------------|
+| Frontend | Next.js 14, React, TypeScript, SCSS Modules |
+| Backend | NestJS 11, TypeORM, SQLite |
+| Tiempo Real | Socket.IO |
+| Testing | Jest (11 tests unitarios) |
 
 ---
 
-### Entregables  
+## Requisitos Previos
 
-- Repositorio público en GitHub con la solución.
-- Código funcional y documentado.
-- `README` que incluya:
-  - Descripción de la solución.
-  - Instrucciones para ejecutar el proyecto.
-  - Decisiones técnicas relevantes y posibles mejoras.
+- **Node.js** v18 o superior
+- **pnpm** (gestor de paquetes)
+
+```bash
+# Instalar pnpm si no lo tienes
+npm install -g pnpm
+```
 
 ---
 
-### Envío  
-Enviar el enlace al repositorio al correo indicado en la convocatoria del desafío.
+## Instalacion
+
+### 1. Clonar el repositorio
+
+```bash
+git clone https://github.com/michael23499/kds-product-challenge-resolved-platomico.git
+cd kds-product-challenge-resolved-platomico
+```
+
+### 2. Instalar dependencias
+
+**Opcion rapida (recomendada):**
+
+```bash
+pnpm install:all
+```
+
+Este script instala automaticamente las dependencias del frontend y backend.
+
+# Instalar dependencias del Frontend
+pnpm install # Desde la raiz del proyect ../kds-product-challenge-resolved-platomico
+
+# Instalar dependencias del Backend
+cd backend
+pnpm install
+cd ..
+```
+
+---
+
+## Ejecucion
+
+### Opcion 1: Ejecutar todo junto (Recomendado)
+
+```bash
+pnpm dev:all
+```
+
+Esto inicia:
+- Frontend en http://localhost:3000
+- Backend en http://localhost:3001
+
+### Opcion 2: Ejecutar por separado
+
+```bash
+# Terminal 1 - Backend
+cd backend
+pnpm start:dev
+
+# Terminal 2 - Frontend
+pnpm dev
+```
+
+### Verificar que funciona
+
+1. Abre http://localhost:3000 en tu navegador
+2. Activa el "Simulador Glovo" para ver ordenes automaticas
+3. Haz click en las tarjetas para cambiar estados
+4. Los riders apareceran automaticamente
 
 ---
 
@@ -393,7 +438,6 @@ kds-product-challenge/
 ├── helpers/                      # ========== UTILIDADES ==========
 │   └── utilities.ts                       # Funciones helper
 │
-├── .env.example                           # Variables de entorno de ejemplo
 ├── package.json                           # Dependencias del frontend
 ├── INSTRUCTIONS.md                        # Instrucciones originales del challenge
 └── README.md                              # Esta documentacion

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "install:all": "pnpm install && cd backend && pnpm install",
     "dev": "next dev",
     "dev:backend": "cd backend && pnpm start:dev",
     "dev:all": "concurrently --kill-others \"pnpm dev:backend\" \"pnpm dev\" --names backend,frontend --prefix-colors blue,green",

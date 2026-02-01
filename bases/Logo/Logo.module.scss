@@ -23,3 +23,30 @@
     }
   }
 }
+
+// Mobile landscape
+@media screen and (max-width: 768px) {
+  .pk-logo {
+    &--M {
+      height: 40px;
+    }
+    &--L {
+      height: 60px;
+    }
+  }
+}
+
+// Mobile portrait
+@media screen and (max-width: 480px) {
+  .pk-logo {
+    &--S {
+      height: 28px;
+    }
+    &--M {
+      height: 32px;
+    }
+    &--L {
+      height: 48px;
+    }
+  }
+}

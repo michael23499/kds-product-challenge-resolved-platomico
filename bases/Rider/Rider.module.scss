@@ -17,10 +17,10 @@
   }
 }
 .pk-rider {
-  height: 100px;
+  height: 150px;
   &__container {
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     position: relative;
     &:hover {
       opacity: 0.8;
@@ -30,13 +30,56 @@
   }
   &__order {
     position: absolute;
-    top: -5px;
-    right: -35px;
+    top: 0px;
+    right: -50px;
     opacity: 0;
     border-radius: 10px 10px 10px 0px;
     background-color: #f9cc01;
-    padding: 10px;
+    padding: 10px 14px;
+    font-size: 15px;
+    font-weight: bold;
+    white-space: nowrap;
+    z-index: 10;
     animation: appear 300ms 1000ms forwards;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
   }
   animation: animation 1000ms;
+}
+
+// Mobile
+@media screen and (max-width: 768px) {
+  .pk-rider {
+    height: 100px;
+
+    &__container {
+      width: 100px;
+      height: 100px;
+    }
+
+    &__order {
+      right: -30px;
+      padding: 6px 10px;
+      font-size: 12px;
+      border-radius: 8px 8px 8px 0px;
+    }
+  }
+}
+
+// Mobile portrait
+@media screen and (max-width: 480px) {
+  .pk-rider {
+    height: 80px;
+
+    &__container {
+      width: 80px;
+      height: 80px;
+    }
+
+    &__order {
+      right: -20px;
+      top: -5px;
+      padding: 4px 8px;
+      font-size: 10px;
+    }
+  }
 }

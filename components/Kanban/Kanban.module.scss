@@ -4,4 +4,34 @@
   align-items: flex-start;
   gap: 20px;
   padding: 20px;
+  overflow-x: auto;
+  width: 100%;
+}
+
+// Tablet portrait
+@media screen and (max-width: 1024px) {
+  .pk-kanban {
+    padding: 15px;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+
+// Mobile
+@media screen and (max-width: 768px) {
+  .pk-kanban {
+    padding: 10px;
+    gap: 10px;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+// Mobile portrait
+@media screen and (max-width: 480px) {
+  .pk-kanban {
+    padding: 8px;
+    gap: 8px;
+  }
 }

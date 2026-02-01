@@ -1,0 +1,227 @@
+{
+	"info": {
+		"_postman_id": "kds-api-collection",
+		"name": "KDS API - Pink's",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3001"
+		},
+		{
+			"key": "orderId",
+			"value": ""
+		},
+		{
+			"key": "riderId",
+			"value": ""
+		}
+	],
+	"item": [
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "Crear Orden",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.collectionVariables.set('orderId', jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"items\": [\n        {\n            \"name\": \"Pizza Margherita\",\n            \"image\": \"https://example.com/pizza.jpg\",\n            \"priceAmount\": 12.50,\n            \"priceCurrency\": \"EUR\",\n            \"quantity\": 2\n        },\n        {\n            \"name\": \"Coca Cola\",\n            \"image\": \"https://example.com/coca.jpg\",\n            \"priceAmount\": 2.50,\n            \"priceCurrency\": \"EUR\",\n            \"quantity\": 2\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/orders",
+							"host": ["{{baseUrl}}"],
+							"path": ["orders"]
+						}
+					}
+				},
+				{
+					"name": "Listar Ordenes",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/orders",
+							"host": ["{{baseUrl}}"],
+							"path": ["orders"]
+						}
+					}
+				},
+				{
+					"name": "Obtener Orden por ID",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/orders/{{orderId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["orders", "{{orderId}}"]
+						}
+					}
+				},
+				{
+					"name": "Cambiar Estado a IN_PROGRESS",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"state\": \"IN_PROGRESS\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/orders/{{orderId}}/state",
+							"host": ["{{baseUrl}}"],
+							"path": ["orders", "{{orderId}}", "state"]
+						}
+					}
+				},
+				{
+					"name": "Cambiar Estado a READY",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"state\": \"READY\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/orders/{{orderId}}/state",
+							"host": ["{{baseUrl}}"],
+							"path": ["orders", "{{orderId}}", "state"]
+						}
+					}
+				},
+				{
+					"name": "Pickup Orden (Rider recoge)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"riderId\": \"{{riderId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/orders/{{orderId}}/pickup",
+							"host": ["{{baseUrl}}"],
+							"path": ["orders", "{{orderId}}", "pickup"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Riders",
+			"item": [
+				{
+					"name": "Crear Rider",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.collectionVariables.set('riderId', jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Carlos Rodriguez\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/riders",
+							"host": ["{{baseUrl}}"],
+							"path": ["riders"]
+						}
+					}
+				},
+				{
+					"name": "Listar Riders",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/riders",
+							"host": ["{{baseUrl}}"],
+							"path": ["riders"]
+						}
+					}
+				},
+				{
+					"name": "Obtener Rider por ID",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/riders/{{riderId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["riders", "{{riderId}}"]
+						}
+					}
+				},
+				{
+					"name": "Asignar Orden a Rider",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"orderId\": \"{{orderId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/riders/{{riderId}}/assign",
+							"host": ["{{baseUrl}}"],
+							"path": ["riders", "{{riderId}}", "assign"]
+						}
+					}
+				}
+			]
+		}
+	]
+}

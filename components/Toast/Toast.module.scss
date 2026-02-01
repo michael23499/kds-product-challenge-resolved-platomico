@@ -1,0 +1,94 @@
+.pk-toast {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 14px 16px;
+	border-radius: 8px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	animation: slideIn 0.3s ease-out;
+	min-width: 280px;
+	max-width: 400px;
+
+	&--success {
+		background-color: #d4edda;
+		border-left: 4px solid #28a745;
+		color: #155724;
+	}
+
+	&--info {
+		background-color: #fff3cd;
+		border-left: 4px solid #f9cc01;
+		color: #856404;
+	}
+
+	&--warning {
+		background-color: #fff3e0;
+		border-left: 4px solid #ff9800;
+		color: #e65100;
+	}
+
+	&--error {
+		background-color: #f8d7da;
+		border-left: 4px solid #dc3545;
+		color: #721c24;
+	}
+
+	&__icon {
+		font-size: 18px;
+		font-weight: bold;
+	}
+
+	&__message {
+		flex: 1;
+		font-size: 14px;
+		font-weight: 500;
+	}
+
+	&__close {
+		background: none;
+		border: none;
+		font-size: 20px;
+		cursor: pointer;
+		opacity: 0.6;
+		padding: 0;
+		line-height: 1;
+
+		&:hover {
+			opacity: 1;
+		}
+	}
+}
+
+@keyframes slideIn {
+	from {
+		transform: translateY(20px);
+		opacity: 0;
+	}
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
+// Mobile
+@media screen and (max-width: 480px) {
+	.pk-toast {
+		min-width: auto;
+		max-width: none;
+		width: 100%;
+		padding: 12px 14px;
+		gap: 10px;
+
+		&__icon {
+			font-size: 16px;
+		}
+
+		&__message {
+			font-size: 13px;
+		}
+
+		&__close {
+			font-size: 18px;
+		}
+	}
+}

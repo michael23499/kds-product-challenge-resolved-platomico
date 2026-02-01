@@ -3,19 +3,58 @@
 .pk-riders {
   width: 320px;
   height: max-content;
-  max-height: 90vh;
+  max-height: 400px;
   overflow: auto;
-  min-height: 170px;
+  min-height: 120px;
   border: 1px solid $gray-800;
   border-radius: 12px;
-  padding: 8px;
+  padding: 12px;
   display: grid;
   grid-template-columns: 100%;
   justify-items: center;
   gap: 12px;
   background-color: $gray-900;
 
-  &__container {
-    padding: 20px;
+  h3 {
+    font-weight: 500;
+    color: $gray-200;
+    font-size: 14px;
+    justify-self: start;
+  }
+}
+
+// Tablet portrait
+@media screen and (max-width: 1024px) {
+  .pk-riders {
+    width: 280px;
+    max-height: 300px;
+    min-height: 100px;
+  }
+}
+
+// Mobile landscape
+@media screen and (max-width: 768px) {
+  .pk-riders {
+    width: 100%;
+    max-width: 350px;
+    min-height: 80px;
+    max-height: 250px;
+    padding: 10px;
+    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+
+    h3 {
+      grid-column: 1 / -1;
+      font-size: 13px;
+    }
+  }
+}
+
+// Mobile portrait
+@media screen and (max-width: 480px) {
+  .pk-riders {
+    border-radius: 8px;
+    padding: 8px;
+    gap: 8px;
   }
 }

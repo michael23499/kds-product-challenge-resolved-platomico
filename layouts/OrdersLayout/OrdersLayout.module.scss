@@ -12,19 +12,135 @@
     width: 100%;
     padding: 20px;
     display: flex;
-    flex-direction: column;
-    gap: 8px;
+    flex-direction: row;
+    gap: 20px;
     justify-content: flex-start;
     border-bottom: 1px solid $gray-900;
-    align-items: flex-start;
+    align-items: center;
+
+    strong {
+      flex: 1;
+    }
+  }
+
+  &__create-btn {
+    background-color: #444ce5;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+
+    &:hover {
+      background-color: #3339c4;
+      transform: scale(0.98);
+    }
   }
   &__app {
     display: grid;
-    display: grid;
     width: 100%;
     height: 100dvb;
-    grid-template-columns: auto 360px;
+    grid-template-columns: 1fr 360px;
     gap: 20px;
     background-color: $gray-1000;
+    overflow: hidden;
+  }
+
+  &__sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
+    overflow-y: auto;
+    max-height: calc(100dvh - 80px);
+  }
+}
+
+// Tablet landscape / laptop pequeno
+@media screen and (max-width: 1200px) {
+  .pk-layout {
+    &__navbar {
+      padding: 15px;
+      gap: 15px;
+
+      strong {
+        font-size: 14px;
+      }
+    }
+
+    &__app {
+      grid-template-columns: 1fr 320px;
+      gap: 15px;
+    }
+  }
+}
+
+// Tablet portrait
+@media screen and (max-width: 1024px) {
+  .pk-layout {
+    height: auto;
+    min-height: 100dvh;
+
+    &__app {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto;
+      height: auto;
+    }
+
+    &__sidebar {
+      flex-direction: row;
+      flex-wrap: wrap;
+      max-height: none;
+      padding: 15px;
+      gap: 15px;
+      justify-content: center;
+    }
+  }
+}
+
+// Mobile landscape
+@media screen and (max-width: 768px) {
+  .pk-layout {
+    &__navbar {
+      padding: 12px;
+      gap: 10px;
+      flex-wrap: wrap;
+
+      strong {
+        order: -1;
+        width: 100%;
+        text-align: center;
+        font-size: 13px;
+      }
+    }
+
+    &__create-btn {
+      padding: 8px 16px;
+      font-size: 13px;
+      flex: 1;
+    }
+  }
+}
+
+// Mobile portrait
+@media screen and (max-width: 480px) {
+  .pk-layout {
+    &__navbar {
+      padding: 10px;
+      gap: 8px;
+    }
+
+    &__create-btn {
+      padding: 8px 12px;
+      font-size: 12px;
+    }
+
+    &__sidebar {
+      padding: 10px;
+      gap: 10px;
+    }
   }
 }

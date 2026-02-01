@@ -1,0 +1,18 @@
+.pk-toast-container {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	z-index: 1100;
+	display: flex;
+	flex-direction: column-reverse;
+	gap: 10px;
+}
+
+// Mobile
+@media screen and (max-width: 480px) {
+	.pk-toast-container {
+		bottom: 10px;
+		right: 10px;
+		left: 10px;
+	}
+}

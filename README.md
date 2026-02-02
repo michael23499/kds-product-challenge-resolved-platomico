@@ -19,7 +19,7 @@ Este proyecto implementa un **Kitchen Display System (KDS)** completo que permit
 | Frontend | Next.js 14, React, TypeScript, SCSS Modules |
 | Backend | NestJS 11, TypeORM, SQLite |
 | Tiempo Real | Socket.IO |
-| Testing | Jest (11 tests unitarios) |
+| Testing | Jest (20 tests unitarios + 8 tests E2E) |
 
 ---
 
@@ -54,8 +54,11 @@ pnpm install:all
 
 Este script instala automaticamente las dependencias del frontend y backend.
 
+**Opcion manual:**
+
+```bash
 # Instalar dependencias del Frontend
-pnpm install # Desde la raiz del proyect ../kds-product-challenge-resolved-platomico
+pnpm install # Desde la raiz del proyecto
 
 # Instalar dependencias del Backend
 cd backend
@@ -105,18 +108,16 @@ pnpm dev
 # Entra a la carpeta del backend
 cd backend
 
-# Ejecutar todos los tests una vez:
+# Ejecutar tests unitarios:
 pnpm test
 
+# Ejecutar tests E2E (end-to-end):
+pnpm test:e2e
+
 # Resultado esperado:
-# PASS src/modules/orders/orders.service.spec.ts
-# OrdersService
-#   create
-#     ✓ should create an order with items
-#   findAll
-#     ✓ should return orders excluding DELIVERED
-#   ... (11 tests en total)
-# Tests: 11 passed
+# Tests unitarios: 20 passed
+# Tests E2E: 8 passed
+# Total: 28 tests
 ```
 
 ### Comandos de Test Disponibles
@@ -124,26 +125,27 @@ pnpm test
 ```bash
 # Desde la carpeta backend/
 
-# 1. Ejecutar tests una vez y terminar
+# 1. Ejecutar tests unitarios
 pnpm test
-# Uso: Verificar que todo funciona antes de hacer commit
+# Uso: Verificar logica de negocio aislada
 
-# 2. Ejecutar tests con reporte de cobertura
+# 2. Ejecutar tests E2E (end-to-end)
+pnpm test:e2e
+# Uso: Verificar flujo completo de la API
+
+# 3. Ejecutar tests con reporte de cobertura
 pnpm test:cov
 # Uso: Ver que porcentaje del codigo esta siendo testeado
-# Genera un reporte mostrando:
-# - % de lineas cubiertas
-# - % de funciones cubiertas
-# - % de ramas (if/else) cubiertas
 
-# 3. Ejecutar tests en modo watch (continuo)
+# 4. Ejecutar tests en modo watch (continuo)
 pnpm test:watch
-# Uso: Mientras desarrollas, los tests se re-ejecutan
-#      automaticamente cada vez que guardas un archivo
+# Uso: Re-ejecuta tests automaticamente al guardar
 # Para salir: presiona 'q'
 ```
 
-### Tests Implementados
+### Tests Unitarios (20 tests)
+
+#### OrdersService (11 tests)
 
 | Funcion | Test | Que Verifica |
 |---------|------|--------------|
@@ -158,6 +160,33 @@ pnpm test:watch
 | recover() | should throw BadRequestException | Error si orden no es DELIVERED |
 | update() | should update order items | Editar items de orden |
 | update() | should throw BadRequestException | Error si orden es READY |
+
+#### OrdersController (9 tests)
+
+| Endpoint | Test | Que Verifica |
+|----------|------|--------------|
+| POST /orders | should create and emit WebSocket | Crear orden + notificar |
+| GET /orders | should return all active orders | Listar ordenes activas |
+| GET /orders/history | should return order history | Historial de entregadas |
+| GET /orders/:id | should return single order | Obtener por ID |
+| PATCH /orders/:id | should update and emit WebSocket | Editar + notificar |
+| PATCH /orders/:id/state | should update state and emit | Cambiar estado + notificar |
+| POST /orders/:id/pickup | should pickup and emit | Entregar + notificar |
+| POST /orders/:id/recover | should recover and emit | Recuperar + notificar |
+| POST /orders/:id/photo-evidence | should add photo and emit | Foto + notificar |
+
+### Tests E2E - End to End (8 tests)
+
+| Flujo | Test | Que Verifica |
+|-------|------|--------------|
+| Flujo Completo | PENDING → IN_PROGRESS → READY → DELIVERED | Ciclo de vida completo |
+| Recuperacion | Recover delivered order | Devolver orden al flujo |
+| Edicion | Edit PENDING orders | Modificar items |
+| Edicion | Reject editing READY orders | Validacion de estado |
+| Foto | Add photo to READY orders | Evidencia fotografica |
+| Foto | Reject photo for non-READY | Validacion de estado |
+| Errores | 404 for non-existent order | Manejo de errores |
+| Errores | 400 for invalid UUID | Validacion de parametros |
 
 ---
 
@@ -338,13 +367,18 @@ kds-product-challenge/
 │   │   │       │   └── item.entity.ts     # Tabla: items
 │   │   │       │
 │   │   │       ├── orders.controller.ts   # Endpoints REST
+│   │   │       ├── orders.controller.spec.ts # Tests del controller
 │   │   │       ├── orders.service.ts      # Logica de negocio
-│   │   │       ├── orders.service.spec.ts # Tests unitarios
+│   │   │       ├── orders.service.spec.ts # Tests del service
 │   │   │       ├── orders.gateway.ts      # WebSocket events
 │   │   │       └── orders.module.ts       # Configuracion del modulo
 │   │   │
 │   │   ├── app.module.ts                  # Modulo raiz
 │   │   └── main.ts                        # Punto de entrada
+│   │
+│   ├── test/
+│   │   ├── jest-e2e.json                  # Configuracion Jest E2E
+│   │   └── orders.e2e-spec.ts             # Tests E2E del flujo completo
 │   │
 │   ├── kds.db                             # Base de datos SQLite (se crea automaticamente)
 │   └── package.json                       # Dependencias del backend
@@ -605,20 +639,13 @@ socket.on('order:photo-added', (order) => {
 
 ### Implementadas
 - [x] Tests unitarios del OrdersService (11 tests)
+- [x] Tests unitarios del OrdersController (9 tests)
+- [x] Tests de integracion E2E (8 tests)
 - [x] Diseno responsive
 - [x] Sistema de notificaciones
 - [x] Historial de ordenes
 - [x] Edicion de ordenes
 - [x] Evidencia fotografica opcional (captura de camara)
-
-### Pendientes - Corto Plazo
-- [ ] Tests de integracion (E2E)
-- [ ] Autenticacion JWT para personal
-- [ ] Roles (cocina, caja, administrador)
-
-### Pendientes - Largo Plazo
-- [ ] Integracion real con API de Glovo
-- [ ] Aplicacion movil para repartidores
 
 ---
 
@@ -632,7 +659,8 @@ cd backend && pnpm start:dev   # Solo backend
 
 # ===== TESTS =====
 cd backend
-pnpm test                 # Ejecutar tests
+pnpm test                 # Tests unitarios (20 tests)
+pnpm test:e2e             # Tests E2E (8 tests)
 pnpm test:cov             # Tests + cobertura
 pnpm test:watch           # Tests en modo watch
 

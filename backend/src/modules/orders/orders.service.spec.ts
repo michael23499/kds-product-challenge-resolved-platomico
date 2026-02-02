@@ -15,6 +15,7 @@ describe('OrdersService', () => {
     id: 'test-uuid-123',
     state: OrderState.PENDING,
     riderId: null,
+    photoEvidence: null,
     createdAt: new Date(),
     updatedAt: new Date(),
     items: [
@@ -211,7 +212,7 @@ describe('OrdersService', () => {
         .mockResolvedValueOnce(updatedOrder);
       itemRepository.delete.mockResolvedValue({ affected: 1, raw: {} });
       itemRepository.create.mockReturnValue(updatedOrder.items[0]);
-      itemRepository.save.mockResolvedValue(updatedOrder.items);
+      itemRepository.save.mockResolvedValue(updatedOrder.items as any);
 
       const result = await service.update('test-uuid-123', updateDto);
 

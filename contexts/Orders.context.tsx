@@ -25,6 +25,7 @@ export type OrdersContextProps = {
 	pickup: (order: Order, riderId: string) => Promise<void>
 	recoverOrder: (orderId: string) => Promise<void>
 	refreshHistory: () => Promise<void>
+	addPhotoEvidence: (orderId: string, photoEvidence: string) => Promise<void>
 }
 
 export const OrdersContext = createContext<OrdersContextProps>(
@@ -112,11 +113,21 @@ export function OrdersProvider(props: OrdersProviderProps) {
 			showWarningRef.current(`Orden #${recoveredOrder.id.slice(0, 8)} recuperada`)
 		})
 
+		socket.on("order:photo-added", (updatedOrder: Order) => {
+			setOrders((prev) =>
+				prev.map((order) =>
+					order.id === updatedOrder.id ? updatedOrder : order,
+				),
+			)
+			showSuccessRef.current(`Foto agregada a orden #${updatedOrder.id.slice(0, 8)}`)
+		})
+
 		return () => {
 			socket.off("order:new")
 			socket.off("order:updated")
 			socket.off("order:picked")
 			socket.off("order:recovered")
+			socket.off("order:photo-added")
 			disconnectSocket()
 		}
 	}, [fetchHistory])
@@ -148,6 +159,14 @@ export function OrdersProvider(props: OrdersProviderProps) {
 		}
 	}, [])
 
+	const addPhotoEvidence = useCallback(async (orderId: string, photoEvidence: string) => {
+		try {
+			await api.orders.addPhotoEvidence(orderId, photoEvidence)
+		} catch (error) {
+			logger.error("Error adding photo evidence", error)
+		}
+	}, [])
+
 	const context = useMemo(() => ({
 		orders,
 		history,
@@ -157,7 +176,8 @@ export function OrdersProvider(props: OrdersProviderProps) {
 		pickup,
 		recoverOrder,
 		refreshHistory: fetchHistory,
-	}), [orders, history, loading, historyLoading, updateOrderState, pickup, recoverOrder, fetchHistory])
+		addPhotoEvidence,
+	}), [orders, history, loading, historyLoading, updateOrderState, pickup, recoverOrder, fetchHistory, addPhotoEvidence])
 
 	return (
 		<OrdersContext.Provider value={context}>

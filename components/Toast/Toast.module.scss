@@ -1,53 +1,53 @@
 .pk-toast {
 	display: flex;
 	align-items: center;
-	gap: 12px;
-	padding: 14px 16px;
-	border-radius: 8px;
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	gap: 8px;
+	padding: 8px 12px;
+	border-radius: 6px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 	animation: slideIn 0.3s ease-out;
-	min-width: 280px;
-	max-width: 400px;
+	min-width: 220px;
+	max-width: 350px;
 
 	&--success {
 		background-color: #d4edda;
-		border-left: 4px solid #28a745;
+		border-left: 3px solid #28a745;
 		color: #155724;
 	}
 
 	&--info {
 		background-color: #fff3cd;
-		border-left: 4px solid #f9cc01;
+		border-left: 3px solid #f9cc01;
 		color: #856404;
 	}
 
 	&--warning {
 		background-color: #fff3e0;
-		border-left: 4px solid #ff9800;
+		border-left: 3px solid #ff9800;
 		color: #e65100;
 	}
 
 	&--error {
 		background-color: #f8d7da;
-		border-left: 4px solid #dc3545;
+		border-left: 3px solid #dc3545;
 		color: #721c24;
 	}
 
 	&__icon {
-		font-size: 18px;
+		font-size: 14px;
 		font-weight: bold;
 	}
 
 	&__message {
 		flex: 1;
-		font-size: 14px;
+		font-size: 12px;
 		font-weight: 500;
 	}
 
 	&__close {
 		background: none;
 		border: none;
-		font-size: 20px;
+		font-size: 16px;
 		cursor: pointer;
 		opacity: 0.6;
 		padding: 0;
@@ -76,19 +76,19 @@
 		min-width: auto;
 		max-width: none;
 		width: 100%;
-		padding: 12px 14px;
-		gap: 10px;
+		padding: 7px 10px;
+		gap: 8px;
 
 		&__icon {
-			font-size: 16px;
+			font-size: 12px;
 		}
 
 		&__message {
-			font-size: 13px;
+			font-size: 11px;
 		}
 
 		&__close {
-			font-size: 18px;
+			font-size: 14px;
 		}
 	}
 }

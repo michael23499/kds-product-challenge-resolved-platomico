@@ -18,6 +18,7 @@ export default function OrdersLayout() {
 				<button
 					className={s["pk-layout__create-btn"]}
 					onClick={() => setIsCreateModalOpen(true)}
+					title="Crear una orden manualmente con productos personalizados"
 				>
 					+ Crear Orden
 				</button>

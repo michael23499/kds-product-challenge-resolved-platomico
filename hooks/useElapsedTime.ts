@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-export function useElapsedTime(startTime: string | undefined) {
+export function useElapsedTime(startTime: string | Date | undefined) {
 	const [elapsed, setElapsed] = useState("")
 
 	useEffect(() => {

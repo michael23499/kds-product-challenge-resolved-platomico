@@ -37,6 +37,7 @@ export enum ErrorCode {
 	ORDER_HISTORY_FAILED = "ORDER_HISTORY_FAILED",
 	ORDER_RECOVER_FAILED = "ORDER_RECOVER_FAILED",
 	ORDER_EDIT_FAILED = "ORDER_EDIT_FAILED",
+	ORDER_PHOTO_FAILED = "ORDER_PHOTO_FAILED",
 
 	// WebSocket Errors
 	WEBSOCKET_CONNECTION_FAILED = "WEBSOCKET_CONNECTION_FAILED",
@@ -66,6 +67,7 @@ export const ErrorMessages: Record<ErrorCode, string> = {
 	[ErrorCode.ORDER_HISTORY_FAILED]: "Error al cargar el historial de ordenes.",
 	[ErrorCode.ORDER_RECOVER_FAILED]: "Error al recuperar la orden.",
 	[ErrorCode.ORDER_EDIT_FAILED]: "Error al editar la orden.",
+	[ErrorCode.ORDER_PHOTO_FAILED]: "Error al agregar la evidencia fotografica.",
 
 	[ErrorCode.WEBSOCKET_CONNECTION_FAILED]: "Error al conectar con el servidor en tiempo real.",
 	[ErrorCode.WEBSOCKET_DISCONNECTED]: "Conexion perdida. Reconectando...",

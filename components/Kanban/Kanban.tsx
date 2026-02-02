@@ -2,6 +2,7 @@ import { useState } from "react"
 import s from "./Kanban.module.scss"
 import Column from "@/components/Column/Column"
 import EditOrderModal from "@/components/EditOrderModal/EditOrderModal"
+import PhotoEvidenceModal from "@/components/PhotoEvidenceModal/PhotoEvidenceModal"
 import { useOrders } from "@/contexts/Orders.context"
 import { useToast } from "@/contexts/Toast.context"
 import {
@@ -14,9 +15,10 @@ import { Order } from "@/dtos/Order.dto"
 const logger = createLogger("Kanban")
 
 export default function Kanban() {
-	const { orders, loading, updateOrderState } = useOrders()
+	const { orders, loading, updateOrderState, addPhotoEvidence } = useOrders()
 	const { showError } = useToast()
 	const [editingOrder, setEditingOrder] = useState<Order | null>(null)
+	const [photoOrder, setPhotoOrder] = useState<Order | null>(null)
 
 	const pendingOrders = orders.filter((o) => o.state === "PENDING")
 	const inProgressOrders = orders.filter((o) => o.state === "IN_PROGRESS")
@@ -56,6 +58,21 @@ export default function Kanban() {
 		setEditingOrder(null)
 	}
 
+	const handleCameraClick = (order: Order) => {
+		setPhotoOrder(order)
+	}
+
+	const handleClosePhoto = () => {
+		setPhotoOrder(null)
+	}
+
+	const handleCapturePhoto = async (photoEvidence: string) => {
+		if (photoOrder) {
+			await addPhotoEvidence(photoOrder.id, photoEvidence)
+			setPhotoOrder(null)
+		}
+	}
+
 	if (loading) {
 		return (
 			<section className={s["pk-kanban"]}>
@@ -80,13 +97,26 @@ export default function Kanban() {
 				onEdit={handleEdit}
 				showEditButton
 			/>
-			<Column title="Listo" orders={readyOrders} />
+			<Column
+				title="Listo"
+				orders={readyOrders}
+				onCameraClick={handleCameraClick}
+				showCameraButton
+			/>
 
 			<EditOrderModal
 				isOpen={editingOrder !== null}
 				order={editingOrder}
 				onClose={handleCloseEdit}
 			/>
+
+			{photoOrder && (
+				<PhotoEvidenceModal
+					order={photoOrder}
+					onCapture={handleCapturePhoto}
+					onClose={handleClosePhoto}
+				/>
+			)}
 		</section>
 	)
 }

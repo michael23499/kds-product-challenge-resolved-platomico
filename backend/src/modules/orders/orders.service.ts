@@ -19,6 +19,7 @@ export interface TransformedOrder {
   id: string;
   state: OrderState;
   riderId: string | null;
+  photoEvidence: string | null;
   createdAt: Date;
   updatedAt: Date;
   items: TransformedItem[];
@@ -38,6 +39,7 @@ export class OrdersService {
       id: order.id,
       state: order.state,
       riderId: order.riderId,
+      photoEvidence: order.photoEvidence,
       createdAt: order.createdAt,
       updatedAt: order.updatedAt,
       items: order.items.map((item) => ({
@@ -167,6 +169,22 @@ export class OrdersService {
     }
     order.state = OrderState.PENDING;
     order.riderId = null;
+    order.photoEvidence = null;
+    const savedOrder = await this.orderRepository.save(order);
+    return this.transformOrder(savedOrder);
+  }
+
+  async addPhotoEvidence(id: string, photoEvidence: string): Promise<TransformedOrder> {
+    const order = await this.orderRepository.findOne({ where: { id } });
+    if (!order) {
+      throw new NotFoundException(`Order ${id} not found`);
+    }
+    if (order.state !== OrderState.READY) {
+      throw new BadRequestException(
+        `Photo evidence can only be added to READY orders. Current state: ${order.state}`,
+      );
+    }
+    order.photoEvidence = photoEvidence;
     const savedOrder = await this.orderRepository.save(order);
     return this.transformOrder(savedOrder);
   }

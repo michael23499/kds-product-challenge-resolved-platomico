@@ -23,6 +23,9 @@ export class Order {
   @Column({ type: 'varchar', nullable: true })
   riderId: string | null;
 
+  @Column({ type: 'text', nullable: true })
+  photoEvidence: string | null;
+
   @CreateDateColumn()
   createdAt: Date;
 

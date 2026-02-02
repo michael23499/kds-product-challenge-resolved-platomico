@@ -14,6 +14,7 @@ export type Order = {
 	id: string
 	state: OrderState
 	riderId?: string | null
+	photoEvidence?: string | null
 	items: Array<Item>
 	createdAt: Date | string
 	updatedAt: Date | string

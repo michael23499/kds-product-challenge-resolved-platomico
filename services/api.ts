@@ -95,17 +95,6 @@ export const api = {
 			)
 		},
 
-		getById: async (id: string): Promise<Order> => {
-			logger.debug(`Fetching order ${id}`)
-			return apiRequest(
-				async () => {
-					const response = await fetchWithTimeout(`${API_URL}/orders/${id}`)
-					return handleResponse<Order>(response, ErrorCode.ORDER_NOT_FOUND)
-				},
-				ErrorCode.ORDER_FETCH_FAILED,
-			)
-		},
-
 		updateState: async (id: string, state: Order["state"]): Promise<Order> => {
 			logger.info(`Updating order ${id} to state ${state}`)
 			return apiRequest(
@@ -193,6 +182,22 @@ export const api = {
 				false, // No retry to avoid duplicate edits
 			)
 		},
+
+		addPhotoEvidence: async (id: string, photoEvidence: string): Promise<Order> => {
+			logger.info(`Adding photo evidence to order ${id}`)
+			return apiRequest(
+				async () => {
+					const response = await fetchWithTimeout(`${API_URL}/orders/${id}/photo-evidence`, {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({ photoEvidence }),
+					})
+					return handleResponse<Order>(response, ErrorCode.ORDER_PHOTO_FAILED)
+				},
+				ErrorCode.ORDER_PHOTO_FAILED,
+				false, // No retry to avoid duplicate uploads
+			)
+		},
 	},
 
 }
@@ -245,6 +250,3 @@ export const disconnectSocket = () => {
 		socket = null
 	}
 }
-
-// Export API URL for reference
-export const getApiUrl = () => API_URL

@@ -76,4 +76,14 @@ export class OrdersController {
     this.ordersGateway.emitOrderRecovered(order);
     return order;
   }
+
+  @Post(':id/photo-evidence')
+  async addPhotoEvidence(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body('photoEvidence') photoEvidence: string,
+  ) {
+    const order = await this.ordersService.addPhotoEvidence(id, photoEvidence);
+    this.ordersGateway.emitPhotoAdded(order);
+    return order;
+  }
 }

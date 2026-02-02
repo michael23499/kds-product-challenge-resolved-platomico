@@ -222,7 +222,7 @@ pnpm test:watch
 #### 8. Historial de Ordenes
 ```
 - Panel lateral con ordenes entregadas
-- Muestra ultimas 2 horas
+- Muestra últimas 2 horas
 - Boton "Recuperar" para devolver orden a PENDING
 ```
 
@@ -494,7 +494,7 @@ GET /orders
 GET /orders/history
 
 // Respuesta: 200 OK
-// Retorna ordenes DELIVERED de las ultimas 2 horas
+// Retorna ordenes DELIVERED de las últimas 2 horas
 // Ordenadas por fecha de actualizacion (mas recientes primero)
 [
   { "id": "...", "state": "DELIVERED", "riderId": "rider-123", ... }

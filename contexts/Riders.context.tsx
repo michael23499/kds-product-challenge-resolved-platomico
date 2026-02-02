@@ -39,12 +39,13 @@ export type RidersProviderProps = {
 export function RidersProvider(props: RidersProviderProps) {
 	const [riders, setRiders] = useState<Array<RiderData>>([])
 	const [assignedOrders, setAssignedOrders] = useState<string[]>([])
+	const [initialLoadDone, setInitialLoadDone] = useState(false)
 	const [modal, setModal] = useState<ModalState>({
 		isOpen: false,
 		orderId: null,
 		orderState: null,
 	})
-	const { orders, pickup } = useOrders()
+	const { orders, loading, pickup } = useOrders()
 	const { showWarning } = useToast()
 
 	const ordersRef = useRef(orders)
@@ -56,16 +57,35 @@ export function RidersProvider(props: RidersProviderProps) {
 	const showWarningRef = useRef(showWarning)
 	showWarningRef.current = showWarning
 
-	// Limpiar órdenes asignadas que ya no existen (fueron entregadas)
+	// Carga inicial: crear riders para órdenes existentes inmediatamente
 	useEffect(() => {
+		if (!loading && orders.length > 0 && !initialLoadDone) {
+			setInitialLoadDone(true)
+			// Crear riders para todas las órdenes existentes al cargar
+			const existingOrderIds = orders.map((o) => o.id)
+			setAssignedOrders(existingOrderIds)
+			setRiders(existingOrderIds.map((id) => ({ orderWanted: id })))
+		} else if (!loading && orders.length === 0 && !initialLoadDone) {
+			setInitialLoadDone(true)
+		}
+	}, [orders, loading, initialLoadDone])
+
+	// Limpiar órdenes asignadas y riders cuyas órdenes ya no existen (fueron entregadas)
+	useEffect(() => {
+		if (!initialLoadDone) return
 		const currentOrderIds = orders.map((o) => o.id)
 		setAssignedOrders((prev) =>
 			prev.filter((id) => currentOrderIds.includes(id))
 		)
-	}, [orders])
+		// También limpiar riders de órdenes que ya no existen
+		setRiders((prev) =>
+			prev.filter((rider) => currentOrderIds.includes(rider.orderWanted))
+		)
+	}, [orders, initialLoadDone])
 
-	// Asignar rider a nuevas órdenes
+	// Asignar rider a nuevas órdenes (solo después de la carga inicial)
 	useEffect(() => {
+		if (!initialLoadDone) return
 		const order = orders.find((order) => !assignedOrders.includes(order.id))
 		if (order) {
 			setAssignedOrders((prev) => [...prev, order.id])
@@ -83,19 +103,25 @@ export function RidersProvider(props: RidersProviderProps) {
 				getRandomInterval(4000, 10000),
 			)
 		}
-	}, [orders, assignedOrders])
+	}, [orders, assignedOrders, initialLoadDone])
 
 	const pickupOrder = useCallback((orderId: string) => {
 		const currentOrder = ordersRef.current.find((o) => o.id === orderId)
-		if (currentOrder && currentOrder.state === "READY") {
+
+		// Si la orden ya no existe, eliminar el rider silenciosamente
+		if (!currentOrder) {
+			setRiders((prev) => prev.filter((r) => r.orderWanted !== orderId))
+			return
+		}
+
+		if (currentOrder.state === "READY") {
 			pickupRef.current(currentOrder, `rider-${Date.now()}`)
 			setRiders((prev) => prev.filter((r) => r.orderWanted !== orderId))
 		} else {
-			const state = currentOrder?.state || "PENDING"
 			setModal({
 				isOpen: true,
 				orderId: orderId.slice(0, 8),
-				orderState: state === "PENDING" ? "Pendiente" : "En preparacion",
+				orderState: currentOrder.state === "PENDING" ? "Pendiente" : "En preparacion",
 			})
 		}
 	}, [])

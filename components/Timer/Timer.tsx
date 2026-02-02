@@ -2,7 +2,7 @@ import { useElapsedTime } from "@/hooks/useElapsedTime"
 import s from "./Timer.module.scss"
 
 type TimerProps = {
-	startTime: string | undefined
+	startTime: string | Date | undefined
 	warning?: number
 	danger?: number
 }

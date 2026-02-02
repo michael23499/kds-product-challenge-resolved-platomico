@@ -90,15 +90,27 @@ export default function OrderSimulator() {
 		<div className={s["pk-simulator"]}>
 			<h4>Simulador Glovo</h4>
 			<div className={s["pk-simulator__controls"]}>
-				<button onClick={createSingleOrder} className={s["pk-simulator__btn"]}>
+				<button
+					onClick={createSingleOrder}
+					className={s["pk-simulator__btn"]}
+					title="Crear un pedido aleatorio de prueba al instante"
+				>
 					+ Nuevo Pedido
 				</button>
 				{isRunning ? (
-					<button onClick={stopSimulation} className={`${s["pk-simulator__btn"]} ${s["pk-simulator__btn--stop"]}`}>
+					<button
+						onClick={stopSimulation}
+						className={`${s["pk-simulator__btn"]} ${s["pk-simulator__btn--stop"]}`}
+						title="Detener la generacion automatica de pedidos"
+					>
 						Detener Auto
 					</button>
 				) : (
-					<button onClick={startSimulation} className={`${s["pk-simulator__btn"]} ${s["pk-simulator__btn--start"]}`}>
+					<button
+						onClick={startSimulation}
+						className={`${s["pk-simulator__btn"]} ${s["pk-simulator__btn--start"]}`}
+						title="Generar pedidos automaticamente cada 5 segundos"
+					>
 						Iniciar Auto
 					</button>
 				)}

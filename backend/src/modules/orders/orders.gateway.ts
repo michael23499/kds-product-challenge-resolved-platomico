@@ -46,4 +46,8 @@ export class OrdersGateway implements OnGatewayConnection, OnGatewayDisconnect {
   emitOrderRecovered(order: TransformedOrder) {
     this.server.emit('order:recovered', order);
   }
+
+  emitPhotoAdded(order: TransformedOrder) {
+    this.server.emit('order:photo-added', order);
+  }
 }

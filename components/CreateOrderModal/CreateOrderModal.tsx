@@ -144,6 +144,7 @@ export default function CreateOrderModal({ isOpen, onClose }: CreateOrderModalPr
 						className={s["pk-add-btn"]}
 						onClick={addItem}
 						disabled={isSubmitting}
+						title="Agregar otro producto a esta orden"
 					>
 						+ Agregar Item
 					</button>
@@ -166,6 +167,7 @@ export default function CreateOrderModal({ isOpen, onClose }: CreateOrderModalPr
 						className={s["pk-btn--primary"]}
 						onClick={onSubmit}
 						disabled={isSubmitting || items.length === 0}
+						title="Guardar y enviar la orden a la cocina"
 					>
 						{isSubmitting ? "Creando..." : "Crear Orden"}
 					</button>
